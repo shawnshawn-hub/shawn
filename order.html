@@ -1,0 +1,221 @@
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="logo.webp">
+<title>Peak Brew Co. - Order & Payment</title>
+<header>
+  <h1><a href="index.html" class="peak">Peak Brew Co.</a></h1>
+  <img src="logo.webp"
+       alt="Logo"
+       class="logo">
+</header>
+
+<section>
+  <h2>Order & Payment</h2>
+
+  <div class="order-container">
+
+    <!-- ORDER FORM -->
+    <div class="card">
+        <a href="index.html" class="exit" >X</a>
+      <h3>Place Your Order</h3>
+
+      <form id="checkoutForm" novalidate>
+        <label>Name</label>
+        <input id="name" type="text" oninput="checkForm()" placeholder="Your name" required>
+
+        <label>Drink</label>
+        <select id="drink" onchange="checkForm()" required>
+            <option value="" disabled selected>Select a drink</option>
+            <option>Espresso - ₱90</option>
+            <option>Americano - ₱100</option>
+            <option>Latte - ₱120</option>
+            <option>Cappuccino - ₱120</option>
+            <option>Green Tea - ₱180</option>
+            <option>Black Tea - ₱180</option>
+            <option>Milk Tea - ₱140</option>
+            <option>Herbal Tea - ₱90</option>
+            <option>Caramel Latte - ₱150</option>
+            <option>Mocha - ₱140</option>
+            <option>Matcha Latte - ₱140</option>
+            <option>Iced Brew - ₱120</option>
+        </select>
+
+        <label>Quantity</label>
+        <input id="qty" type="number" min="1" value="1" oninput="checkForm()" required>
+
+        <label>Notes: (Type N/A IF NONE)</label>
+        <textarea oninput="checkForm()" placeholder="Less sugar, extra shot, etc." ></textarea>
+
+
+<br>
+
+
+
+
+            <h3>Delivery Address</h3>
+            
+        
+          <label>Full Name</label>
+          <input id="fullName" type="text" oninput="checkForm()" required placeholder="Enter your full name" >
+
+          <label>Contact Number</label>
+          <input  id="contact" type="tel" oninput="checkForm()"  required placeholder="09XX XXX XXXX" >
+
+          <label>Street Address</label>
+          <input  id="street" type="text" oninput="checkForm()"  placeholder="House No., Street Name" >
+
+          <label>City / Municipality</label>
+          <input  type="text"  required placeholder="Your city" >
+
+          <label>Delivery Notes: Required</label>
+          <textarea id="city" type="text" oninput="checkForm()" required placeholder="Landmarks, special instructions..."></textarea>
+
+
+
+    </div>
+
+  </div>
+
+<br>
+
+      <div class="order-container">
+        <!-- PAYMENT OPTIONS -->
+        <div class="card">
+            <h3>Payment Options</h3>
+
+            <select id="paymentMethod" onchange="showPaymentFields()" required>
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="cash">Cash on Delivery</option>
+                <option value="gcash">GCash</option>
+                <option value="card">Credit / Debit Card</option>
+            </select>
+
+            <hr>
+
+            <div id="paymentDetails"></div>
+                        
+            <button class="button-1" id="orderBtn" type="submit" disabled>Order</button>
+            
+        </div>
+      </div>
+    </form>
+</section>
+
+</section>
+
+<footer>
+  <p>© 2026 Peak Brew Co.</p>
+</footer>
+
+<script>
+function showPaymentFields() {
+  const method = document.getElementById("paymentMethod").value;
+  const container = document.getElementById("paymentDetails");
+
+  container.innerHTML = "";
+
+  if (method === "cash") {
+    container.innerHTML = `
+      <p><strong>Cash on Delivery</strong></p>
+      <p>Please prepare the exact amount upon delivery. We’ll give you a call soon to confirm your order, 
+        and our delivery rider will contact you again once they arrive at your location.</p>
+    `;
+  }
+
+  else if (method === "gcash") {
+    container.innerHTML = `
+      <p><strong>GCash Payment</strong></p>
+      <p>Send to: 0946-912-2622</p>
+        <span>Reference Number:</span>
+        <input id="ref" class="inputbox" type="text" placeholder="Enter GCash reference number" required >
+
+    `;
+  }
+
+  else if (method === "card") {
+    container.innerHTML = `
+                    <span>We Accept: </span><br>
+                    <img src="payments.png" class="card-1">
+                    <span></span>
+                <hr>
+                <span>Name:</span>
+                    <input id="fname" class="inputbox" type="text" placeholder="Full Name" required>
+
+                 <span>Email:</span>
+                    <input id="email" class="inputbox" type="email" placeholder="Email" required>
+
+                <span>Address:</span>
+                    <input id="address" class="inputbox" type="text" placeholder="e.g Floor, Unit Number" required>
+
+                <span>City:</span>
+                    <input id="city-2" class="inputbox" type="text" placeholder="City / Provice" required>
+
+                <span>Zip Code:</span>
+                    <input id="zip" class="inputbox" type="text" placeholder="Zip Code" required>
+                
+                <span>Name on Card:</span>
+                    <input id="ncard" class="inputbox" type="text" placeholder="NAME ON CARD" required>
+                
+                <span>Card Number:</span>
+                    <input id="cnum" class="inputbox" type="number" placeholder="xxxx-xxxx-xxxx-xxxx" required>
+
+  
+    `;
+  }
+  checkForm();
+}
+
+function checkForm() {
+  const name = document.getElementById("name").value;
+  const drink = document.getElementById("drink").value;
+  const fullName = document.getElementById("fullName").value;
+  const contact = document.getElementById("contact").value;
+  const street = document.getElementById("street").value;
+  const city = document.getElementById("city").value;
+  const payment = document.getElementById("paymentMethod").value;
+
+
+  let valid = true;
+
+  if (!name || !drink || !fullName || !contact || !street || !city || !payment) {
+    valid = false;
+  }
+
+  if (payment === "gcash") {
+    const ref = document.getElementById("ref");
+    if (!ref || !ref.value) valid = false;
+  }
+
+  if (payment === "card") {
+    const fname = document.getElementById("fname");
+    const email = document.getElementById("email");
+    const address = document.getElementById("address");
+    const city2 = document.getElementById("city-2");
+    const zip = document.getElementById("zip");
+    const ncard = document.getElementById("ncard");
+    const cnum = document.getElementById("cnum");
+
+    if (
+      !fname.value ||
+      !email.value ||
+      !address.value ||
+      !city2.value ||
+      !zip.value ||
+      !ncard.value ||
+      !cnum.value
+    ) {
+      valid = false;
+    }
+  }
+
+
+  document.getElementById("orderBtn").disabled = !valid;;
+}
+
+
+document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  alert("Order Confirmed! Thank you!");
+  window.location.href = "index.html";
+});
+</script>
